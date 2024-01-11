@@ -1,0 +1,34 @@
+﻿@model SThakarAssignment2.Entities.Course
+
+@{
+    ViewData["Title"] = "Edit a Course";
+}
+<h3>Edit @Model.Name</h3>
+@*Form to edit a course *@
+<form asp-action="ProcessEditCourse" asp-controller="Course" asp-route-id="@Model.CourseId" method="post" enctype="application/x-www-form-urlencoded">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" type="text" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Instructor">Instructor</label>
+        <input asp-for="Instructor" class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+        <label asp-for="StartDate">Start Date</label>
+        <input type="date" class="form-control" asp-for="StartDate" />
+    </div>
+    <div class="form-group">
+        <label asp-for="RoomNumber">Room Number</label>
+        <input type="text" asp-for="RoomNumber" class="form-control" />
+    </div>
+    <input type="hidden" asp-for="CourseId" />
+    <input type="hidden" asp-for="Students" value="@Model.Students" />
+    <br />
+    <button type="submit" class="btn btn-primary" >Edit</button>
+    <a asp-action="ViewCourses" asp-controller="Course" class="btn btn-secondary">Cancel</a>
+
+</form>

@@ -1,0 +1,21 @@
+﻿
+@model SThakarAssignment2.Entities.Course
+@{
+    ViewData["Title"] = $"Dear Student";
+}@if(Model != null)
+{
+    @* Confirmation form *@
+    <div class="container">
+        <h3>You have been invited to enroll in the "@Model.Name" Course!</h3>
+        <p>Hey <b>@ViewData["sName"]</b>, you have been invited to enroll in the <b>@Model.Name</b> in room <b>@Model.RoomNumber</b> starting <b>@Model.StartDate</b> with instructor <b>@Model.Instructor</b> - we would be thrilled to have join us but ask that you confirm your enrollment!</p>
+        <h5>Do you want to enroll?</h5>
+        <br>
+        <form asp-action="SendResponce" method="post" enctype="application/x-www-form-urlencoded" asp-controller="Email">
+            <input type="hidden" name="id" value="@Model.CourseId">
+            <input type="hidden" name="sId" value="@ViewData["sId"]">
+            <input class="mx-3" type="radio" value="Yes" name="Responce" />Yes
+            <input class="mx-3" type="radio" value="No" name="Responce" />No
+            <button type="submit" class="btn btn-primary mx-4">Submit Responce</button>
+        </form>
+    </div>
+}

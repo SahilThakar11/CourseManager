@@ -1,0 +1,103 @@
+﻿@using SThakarAssignment2.Entities;
+@model SThakarAssignment2.Entities.Course
+@{
+    ViewData["Title"] = "Manage Your Course";
+}
+
+<div class="container">
+    <h3>About this Course</h3>
+    <a asp-action="ViewCourses" asp-controller="Course">All courses</a> |    
+    @if(Model != null)
+    {
+        <a asp-action="GetEditCourseById" asp-route-id="@Model.CourseId" asp-controller="Course">Edit this course</a>
+    }
+   |  <a asp-action="GetAddCourseRequest" asp-controller="Course">Add a new course</a>
+    <br />
+    @* basic details of the course*@
+    <div class="summary">
+        <h5>Course summary:</h5>
+       @if(Model != null)
+        {
+            <p>The course "@Model.Name" is in Room @Model.RoomNumber starting on @Model.StartDate and the instructor is "@Model.Instructor".</p>
+        }
+    </div>
+    <br />
+
+    <div class="invite-section">
+        @if(Model != null && Model.Students != null)
+        {
+            <span>Invite not sent:@Model.Students.Count(s =>s.Status == StudentStatus.ConfirmationMessageNotSent)</span> <span>|</span>
+            <span>Sent Count:@Model.Students.Count(s => s.Status == StudentStatus.ConfirmationMessageSent)</span> <span>|</span>
+            <span>Confirmed Count:@Model.Students.Count(s => s.Status == StudentStatus.EnrollmentConfirmed)</span> <span>|</span>
+            <span>Declined Count:@Model.Students.Count(s => s.Status == StudentStatus.EnrollmentDeclined)</span>
+        }
+    </div>
+    <br />
+    @* student table *@
+    <div class="student-data">
+        <h5>Students:</h5>
+        @if (Model == null || Model.Students == null || !Model.Students.Any())
+        {
+            <p> No Students in the Course Add Some Students.</p>
+            
+        }
+        else
+        {
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Email</td>
+                        <td>Enrollment Status</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        <tr>
+                            <td>@student.Name</td>
+                            <td>@student.Email</td>
+                            <td>@student.Status</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if(Model != null)
+        {
+            @* Student add form *@
+            using (Html.BeginForm("AddStudent", "Course", new { id = Model.CourseId }, FormMethod.Post))
+            {<div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label class="col-form-label" >Name</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" name="Name" required/>
+                </div>
+                <div class="col-auto">
+                    <label class="col-form-label" >Email</label>
+                </div>
+                <div class="col-auto">
+                    <input type="email" class="form-control" name="Email" required/>
+                </div>
+                <input type="hidden" >
+                <br />
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Create Student</button>
+                </div>
+                </div>
+            }
+        }
+        @if(Model != null)
+        {
+            @* send confirmation form *@
+            <div class="send-email container">
+                <h5>Actions:</h5>
+                <form method="post" asp-controller="Course" asp-action="SendEmail" asp-route-id="@Model.CourseId">
+                    <button type="submit" class="btn btn-primary">Send Confirmation Email</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>

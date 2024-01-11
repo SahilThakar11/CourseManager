@@ -1,0 +1,44 @@
+﻿@model List<SThakarAssignment2.Entities.Course>
+@{
+    ViewData["Title"] = "All my Courses";
+}
+<div class="container">
+    <h3>All my Courses</h3>
+    <a class="nav nav-link" asp-action="GetAddCourseRequest" asp-controller="Course">Add a new course</a>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Instructor</th>
+                <th>Start date</th>
+                <th>Room No.</th>
+                <th>No. of students</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Count == 0)
+            {
+                   <tr>
+                        <td colspan="6">
+                            Add a Course to see the data and actions.
+                        </td>
+                    </tr>
+            }
+            @foreach(var CourseManager in Model)
+            {
+                 <tr>
+                    <td>@CourseManager.Name</td>
+                    <td>@CourseManager.Instructor</td>
+                    <td>@CourseManager.StartDate</td>
+                    <td>@CourseManager.RoomNumber</td>
+                    <td>@CourseManager.Students.Count</td>
+                    <td>
+                        <a asp-controller="Course" asp-action="GetCourseId" asp-route-id="@CourseManager.CourseId">Manage</a> | 
+                        <a asp-controller="Course" asp-action="GetEditCourseById" asp-route-id="@CourseManager.CourseId">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
